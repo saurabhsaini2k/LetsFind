@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,12 +72,38 @@ public class Signup extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
+
+    public final static boolean isValidNumber(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return Patterns.PHONE.matcher(target).matches();
+        }
+    }
+
+
 
     @Override
     public void onClick(View v) {
         name = et_signup_name.getText().toString();
+
         email = et_signup_email.getText().toString();
+        if(!isValidEmail(email)){
+            Toast.makeText(getActivity(),"Invalid EMail",Toast.LENGTH_LONG).show();
+            return;
+        }
         number = et_signup_contact.getText().toString();
+        if(!isValidNumber(number)){
+            Toast.makeText(getActivity(),"Invalid Contact",Toast.LENGTH_LONG).show();
+            return;
+        }
         password = et_signup_password.getText().toString();
         getActivity().registerReceiver(mHandleMessageReceiver,new IntentFilter());
         final String regId = GCMRegistrar.getRegistrationId(getActivity());

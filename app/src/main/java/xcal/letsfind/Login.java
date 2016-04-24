@@ -125,13 +125,23 @@ public class Login extends Fragment implements View.OnClickListener {
     }
 
 
-
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
 
     public void onClick(View v) {
         String email="";
         String password="";
         if(v==bt_login) {
             email = et_login_email.getText().toString().trim().toLowerCase();
+            if(!isValidEmail(email)){
+                Toast.makeText(getActivity(),"Invalid EMail",Toast.LENGTH_LONG).show();
+                return;
+            }
             password = et_login_password.getText().toString().trim().toLowerCase();
         }
 
